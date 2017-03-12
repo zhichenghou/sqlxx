@@ -1,0 +1,4 @@
+{{define "footer"}}
+</mapper>
+
+{{end}}
