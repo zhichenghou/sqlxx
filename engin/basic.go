@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"github.com/zhichenghou/sqlxx/models"
 	"os"
+	"path"
+	"runtime"
 	"text/template"
 )
 
@@ -70,7 +72,8 @@ func GenBasic(db *sql.DB, schema string, table string, mapperPackage string, mod
 }
 
 func genModelJava(param *Param) error {
-	t := template.Must(template.ParseFiles("templates/java/model.java.tpl"))
+	templateDir := getTemplateDir()
+	t := template.Must(template.ParseFiles(templateDir + "/java/model.java.tpl"))
 	err := t.ExecuteTemplate(os.Stdout, "model", param)
 	if err != nil {
 		return err
@@ -80,7 +83,8 @@ func genModelJava(param *Param) error {
 }
 
 func genMapperJava(param *Param) error {
-	t := template.Must(template.ParseFiles("templates/java/mapper.java.tpl"))
+	templateDir := getTemplateDir()
+	t := template.Must(template.ParseFiles(templateDir + "/java/mapper.java.tpl"))
 	err := t.ExecuteTemplate(os.Stdout, "mapper", param)
 	if err != nil {
 		return err
@@ -90,7 +94,11 @@ func genMapperJava(param *Param) error {
 }
 
 func genMapperXml(param *Param) error {
-	t := template.Must(template.ParseFiles("templates/xml/header.xml.tpl", "templates/xml/footer.xml.tpl", "templates/xml/body.xml.tpl"))
+	templateDir := getTemplateDir()
+	t := template.Must(template.ParseFiles(
+		templateDir+"/xml/header.xml.tpl",
+		templateDir+"/xml/footer.xml.tpl",
+		templateDir+"/xml/body.xml.tpl"))
 	err := t.ExecuteTemplate(os.Stdout, "header", param)
 	if err != nil {
 		return err
@@ -107,4 +115,10 @@ func genMapperXml(param *Param) error {
 	}
 
 	return nil
+}
+
+func getTemplateDir() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return path.Dir(filename) + "/../templates"
+
 }
