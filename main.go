@@ -13,17 +13,18 @@ func main() {
 	var dbConn string
 	var schema string
 	var table string
-	var mapperpkg string
-	var modelpkg string
+	var pkg string
 
 	flag.StringVar(&dbConn, "db", "", "db conn str: e.g. user:password@tcp(127.0.0.1:3306)")
 	flag.StringVar(&schema, "schema", "test", "selected schema: e.g. test")
 	flag.StringVar(&table, "table", "", "selected table: e.g. test")
-	flag.StringVar(&mapperpkg, "mapperpkg", "", "mapper package name: e.g. com.houzhicheng.mapper")
-	flag.StringVar(&modelpkg, "modelpkg", "", "model package name: e.g. com.houzhicheng.model")
+	flag.StringVar(&pkg, "pkg", "", `base package name: e.g. com.houzhicheng, and then
+	    	model package: com.houzhicheng.domain.model, 
+	    	mapper package: com.houzhicheng.infra.persistence.sql.mapper,
+	    	repo package: com.houzhicheng.domain.repo`)
 	flag.Parse()
 
-	if dbConn == "" || schema == "" || table == "" || mapperpkg == "" || modelpkg == "" {
+	if dbConn == "" || schema == "" || table == "" || pkg == "" {
 		log.Println("Usage:")
 		flag.PrintDefaults()
 		return
@@ -53,6 +54,6 @@ func main() {
 		return
 	}
 
-	engin.GenBasic(db, schema, table, mapperpkg, modelpkg)
+	engin.GenBasic(db, schema, table, pkg)
 
 }

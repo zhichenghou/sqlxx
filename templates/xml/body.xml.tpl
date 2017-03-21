@@ -17,7 +17,7 @@
 
     <!-- =========================================== UPDATE START =========================================== -->
 
-    <update id="update" parameterType="{{.ModelClassName}}" >
+    <update id="update" parameterType="{{.ModelClassName}}">
         UPDATE {{.Schema}}.{{.Table}}
         SET
             {{- range $idx, $col := .ColumnItems}}

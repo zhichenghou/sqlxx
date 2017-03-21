@@ -17,17 +17,15 @@ type ColumnItem struct {
 }
 
 type Param struct {
-	Schema            string
-	Table             string
-	MapperPackageName string
-	MapperClassName   string
-	ModelPackageName  string
-	ModelClassName    string
-	ModelParamName    string
-	ColumnItems       []*ColumnItem
+	Schema          string
+	Table           string
+	BasePackageName string
+	ModelClassName  string
+	ModelParamName  string
+	ColumnItems     []*ColumnItem
 }
 
-func GenBasic(db *sql.DB, schema string, table string, mapperPackage string, modelPackage string) error {
+func GenBasic(db *sql.DB, schema string, table string, pkg string) error {
 	columns, err := models.GetColumns(db, schema, table)
 	if err != nil {
 		return err
@@ -49,14 +47,12 @@ func GenBasic(db *sql.DB, schema string, table string, mapperPackage string, mod
 	modelParamName := sl[len(sl)-1]
 
 	param := Param{
-		Schema:            schema,
-		Table:             table,
-		MapperPackageName: mapperPackage,
-		MapperClassName:   modelClassName + "Mapper",
-		ModelPackageName:  modelPackage,
-		ModelClassName:    modelClassName,
-		ModelParamName:    modelParamName,
-		ColumnItems:       columnItems,
+		Schema:          schema,
+		Table:           table,
+		BasePackageName: pkg,
+		ModelClassName:  modelClassName,
+		ModelParamName:  modelParamName,
+		ColumnItems:     columnItems,
 	}
 
 	println(modelClassName + "Mapper.xml")
@@ -67,6 +63,20 @@ func GenBasic(db *sql.DB, schema string, table string, mapperPackage string, mod
 
 	println(modelClassName + "Mapper.java")
 	genMapperJava(&param)
+
+	println(modelClassName + "Repo.java")
+	genRepoJava(&param)
+
+	return nil
+}
+
+func genRepoJava(param *Param) error {
+	templateDir := getTemplateDir()
+	t := template.Must(template.ParseFiles(templateDir + "/java/repo.java.tpl"))
+	err := t.ExecuteTemplate(os.Stdout, "repo", param)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

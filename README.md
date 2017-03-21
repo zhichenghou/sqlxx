@@ -8,12 +8,14 @@ go install and run sqlxx
 Usage:
   -db string
     	db conn str: e.g. user:password@tcp(127.0.0.1:3306) (default "")
-  -mapperpkg string
-    	mapper package name: e.g. com.houzhicheng.mapper
-  -modelpkg string
-    	model package name: e.g. com.houzhicheng.model
   -schema string
     	selected schema: e.g. test (default "test")
   -table string
     	selected table: e.g. test
+  -pkg string
+    	base package name: e.g. com.houzhicheng, and then
+	    	model package: com.houzhicheng.domain.model,
+	    	mapper package: com.houzhicheng.infra.persistence.sql.mapper,
+	    	repo package: com.houzhicheng.domain.repo
+    	
 ```
