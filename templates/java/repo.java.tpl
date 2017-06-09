@@ -2,7 +2,7 @@
 package {{.BasePackageName}}.domain.repo;
 
 import {{.BasePackageName}}.domain.model.{{.ModelClassName}};
-import {{.BasePackageName}}.infra.persistence.sql.mapper.{{.ModelClassName}}Mapper
+import {{.BasePackageName}}.infra.persistence.sql.mapper.{{.ModelClassName}}Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -17,7 +17,7 @@ public class {{.ModelClassName}}Repo {
     this.factory = factory;
   }
 
-  // =========================================== QUERY START ===========================================
+  // =========================================== QUERY START ================================
 
   public {{.ModelClassName}} getById(Long id) {
     try (SqlSession session = factory.openSession(true)) {
@@ -26,9 +26,9 @@ public class {{.ModelClassName}}Repo {
     }
   }
 
-  // =========================================== QUERY START ===========================================
+  // =========================================== QUERY START ================================
 
-  // =========================================== UPDATE START ==========================================
+  // =========================================== UPDATE START ===============================
 
   public Integer update({{.ModelClassName}} {{.ModelParamName}}) {
     try (SqlSession session = factory.openSession(true)) {
@@ -37,9 +37,9 @@ public class {{.ModelClassName}}Repo {
     }
   }
 
-  // =========================================== UPDATE END ============================================
+  // =========================================== UPDATE END =================================
 
-  // =========================================== INSERT START ==========================================
+  // =========================================== INSERT START ===============================
 
   public Integer add({{.ModelClassName}} {{.ModelParamName}}) {
     try (SqlSession session = factory.openSession(true)) {
@@ -48,9 +48,9 @@ public class {{.ModelClassName}}Repo {
     }
   }
 
-  // =========================================== INSERT END ============================================
+  // =========================================== INSERT END ================================
 
-  // =========================================== DELETE START ==========================================
+  // =========================================== DELETE START ==============================
 
   public Integer deleteById(Long id) {
     try (SqlSession session = factory.openSession(true)) {
@@ -59,7 +59,7 @@ public class {{.ModelClassName}}Repo {
     }
   }
 
-  // =========================================== DELETE END ============================================
+  // =========================================== DELETE END ================================
 }
 
 {{end}}
